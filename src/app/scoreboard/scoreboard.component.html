@@ -1,0 +1,101 @@
+<div class="scoreboard">
+
+<div class="header">
+    <div class="player-selection">
+        <mat-menu #player1Menu="matMenu" class="player-menu">
+            <button mat-menu-item *ngFor="let player of players" (click)="setPlayer(player, 1)" class="player-option">
+              <div class="player-card">
+                <!-- Zdjęcie gracza -->
+                <img *ngIf="player.imagePath" [src]="player.imagePath" class="player-image">
+                <!-- Dane gracza -->
+                <div class="player-info">
+                  <div class="player-name">{{ player.nickname }}</div>
+                  <div class="player-attribute">{{ player.attribute || '' }}</div>
+                </div>
+              </div>
+            </button>
+        </mat-menu>
+        
+        <!-- Przycisk do wyboru gracza -->
+        <button mat-raised-button color="primary" [matMenuTriggerFor]="player1Menu" class="player-button">
+          {{ 'Change Player 1' }}
+        </button>
+        
+          <mat-menu #player2Menu="matMenu" class="player-menu">
+            <button mat-menu-item *ngFor="let player of players" (click)="setPlayer(player, 2)" class="player-option">
+              <div class="player-card">
+                <!-- Zdjęcie gracza -->
+                <img *ngIf="player.imagePath" [src]="player.imagePath" class="player-image">
+                
+                <!-- Dane gracza -->
+                <div class="player-info">
+                  <div class="player-name">{{ player.nickname }}</div>
+                  <div class="player-attribute">{{ player.attribute || '' }}</div>
+                </div>
+              </div>
+            </button>
+        </mat-menu>
+        
+        <!-- Przycisk do wyboru gracza -->
+        <button mat-raised-button color="accent" [matMenuTriggerFor]="player2Menu" class="player-button">
+          {{ 'Change Player 2' }}
+        </button>
+        
+    </div>
+</div>
+   
+
+    <!-- Wyświetlanie wyników -->
+    <div class="score-display">
+        <!-- Wynik Player 1 -->
+        <div class="player-score">
+            <!-- -->
+            <div class="player-badge">
+                <img [src]="selectedPlayer1?.imagePath ?? defaultPlayer.imagePath" class="profile-image">
+                <div class="player-label">{{ selectedPlayer1?.nickname || 'Player 1' }}</div>
+            </div>
+            <span *ngIf="currentServer === 'Player1'" class="serve-ball-left"><img src="assets/images/ping-pong.png" alt="Ping Pong Icon" class="ping-pong-icon"></span> 
+            <div class="hehe"> 
+                <div class="score-value">
+                    {{ score1 }}
+              </div>
+            </div>
+
+            <div class="score-buttons">
+                <button class="btn-score minus" (click)="decreaseScore(1)">-</button>
+                <button class="btn-score plus" (click)="increaseScore(1)">+</button>
+              </div>
+        </div>
+    
+     <div>
+            <!-- Finish Button -->
+        <div class="finish-container">
+            <button class="finish-match-button" (click)="finishMatch()">Save match</button>
+        </div>
+        <!-- Reset Button -->
+        <div class="reset-container">
+            <button class="reset" (click)="resetScore()">Reset</button>
+        </div>
+     </div>
+    
+
+        <!-- Wynik Player 2 -->
+        <div class="player-score">
+            <div class="player-badge">
+                <img [src]="selectedPlayer2?.imagePath ?? defaultPlayer.imagePath" class="profile-image">
+                <div class="player-label">{{ selectedPlayer2?.nickname || 'Player 2' }}</div>
+            </div>
+            <span *ngIf="currentServer === 'Player2'" class="serve-ball-right"><img src="assets/images/ping-pong.png" alt="Ping Pong Icon" class="ping-pong-icon"></span> 
+            <div class="hehe"> 
+              <div class="score-value">
+                    {{ score2 }}
+              </div>
+            </div>
+            <div class="score-buttons">
+                <button class="btn-score minus" (click)="decreaseScore(2)">-</button>
+                <button class="btn-score plus" (click)="increaseScore(2)">+</button>
+              </div>
+        </div>
+
+    </div>
+</div>

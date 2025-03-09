@@ -1,0 +1,457 @@
+/* Usuń marginesy i zapobiegnij scrollowaniu */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 98%;
+    width: 98%;
+    overflow: hidden; /* 🔥 Zapobiega przewijaniu */
+}
+
+/* Zapewnia, że scoreboard zajmuje cały ekran */
+.scoreboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 98vh; /* 🔥 Zapewnia, że całość zawsze zajmuje 100% wysokości */
+    min-width: 98vw;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    text-align: center;
+    box-sizing: border-box; /* 🔥 Zapobiega błędom z paddingiem */
+}
+  
+  /* Nagłówek SCOREBOARD */
+  h2 {
+    font-size: 4vw;
+    font-weight: bold;
+    margin-bottom: 3vh;
+    text-transform: uppercase;
+  }
+  
+  /* Sekcja wyboru graczy */
+  .player-selection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95vw;
+    margin-bottom: 5vh;
+  }
+  
+  mat-form-field {
+    width: 250px;
+    //min-width: 160px;
+    //max-width: 180px;
+    font-size: 1.5vw;
+  }
+  
+  /* Stylizacja "VS" */
+  .vs {
+    font-size: 3vw;
+    font-weight: bold;
+  }
+  
+  /* Sekcja wyników */
+  .score-display {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    gap: 2vw;
+    margin-bottom: 5vh;
+  }
+  
+  /* Stylizacja nazwy gracza */
+  .player-score {
+    text-align: center;
+    font-size: 2vw;
+    font-weight: bold;
+    display:flex;
+    flex-direction: column;
+  }
+  
+  /* Duże liczby - wynik */
+  .score-value {
+    font-size: 24vw;
+    font-weight: bold;
+    padding: 30px 50px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-width: 300px; /* Zapobiega skakaniu */
+    position: relative;
+    max-height: 280px;
+  }
+
+  
+  /* Przyciski dodawania i odejmowania punktów */
+  .score-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 5vw;
+    margin-top: 2vh;
+    margin-bottom: -30px;
+  }
+  
+  .btn-score {
+    width: 70px;
+    height: 70px;
+    font-size: 3vw;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .plus {
+    background: #4CAF50;
+    color: white;
+  }
+  
+  .minus {
+    background: #FF5252;
+    color: white;
+  }
+  
+  .btn-score:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Reset Button */
+  .reset-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 5vh;
+  }
+  
+  .reset {
+    background: white;
+    color: black;
+    font-size: 2vw;
+    padding: 15px 40px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .reset:hover {
+    background: #FF5252;
+    color: white;
+  }
+  
+  /* RESPONSYWNOŚĆ */
+  @media (max-width: 600px) {
+    .score-value {
+      font-size: 14vw;
+    }
+  
+    h2 {
+      font-size: 6vw;
+    }
+  
+    .player-selection {
+      flex-direction: column;
+      gap: 2vh;
+    }
+  
+    mat-form-field {
+      min-width: 140px;
+      max-width: 160px;
+    }
+  
+    button {
+      font-size: 4vw;
+      padding: 10px 20px;
+    }
+  }
+
+  mat-option {
+    color: whitesmoke;
+    font-size:16px !important;
+  }
+  
+  /* 🔹 Wymuszenie pełnego wyświetlenia dropdowna */
+.mat-mdc-select-panel.mdc-menu-surface {
+    background: #1c2858 !important; /* Głębokie granatowe tło */
+    border-radius: 10px !important;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5) !important; /* Efekt "wychodzenia na wierzch" */
+    
+    max-height: none !important; /* 🔥 Wyłączenie limitu wysokości */
+    height: auto !important; /* 🔥 Automatyczne dopasowanie do liczby opcji */
+    overflow: visible !important; /* 🔥 Brak scrolla */
+    z-index: 9999 !important; /* 🔥 Wymuszenie na wierzchu */
+  }
+  
+  /* 🔹 Opcje w dropdownie */
+  .mat-mdc-select-panel .mat-option {
+    font-size: 1.3vw !important;
+    font-weight: bold !important;
+    padding: 12px 20px !important;
+    color: white !important;
+    transition: background 0.3s ease-in-out !important;
+  }
+  
+  /* 🔹 Efekt hover dla opcji */
+  .mat-mdc-select-panel .mat-option:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffeb3b !important;
+  }
+  
+  /* 🔹 Stylizacja aktywnej opcji */
+  .mat-mdc-select-panel .mat-option.mat-selected {
+    background: rgba(255, 255, 255, 0.3) !important;
+    font-weight: bold !important;
+    color: #ffeb3b !important;
+  }
+  
+  /* 🔹 Ustawienie dropdowna NA WIERZCHU */
+  .mat-mdc-select-panel.mdc-menu-surface {
+    position: absolute !important;
+    z-index: 9999 !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+  }
+  
+  /* 🔹 Pełna stylizacja dropdowna */
+::ng-deep .mat-mdc-select-panel {
+    background: #1c2858 !important; /* Głębokie granatowe tło */
+    border-radius: 10px !important;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5) !important; /* Efekt "wychodzenia na wierzch" */
+    height: auto !important; /* 🔥 Automatyczne dopasowanie do liczby opcji */
+    overflow: visible !important; /* 🔥 Brak scrolla */
+    z-index: 9999 !important; /* 🔥 Wymuszenie na wierzchu */
+  }
+  
+  /* 🔹 Opcje w dropdownie */
+  ::ng-deep .mat-mdc-select-panel .mat-mdc-option {
+    font-size: 1.3vw !important;
+    font-weight: bold !important;
+    padding: 0px !important;
+    color: white !important;
+    transition: background 0.3s ease-in-out !important;
+  }
+  
+  /* 🔹 Efekt hover dla opcji */
+  ::ng-deep .mat-mdc-select-panel .mat-mdc-option:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffeb3b !important;
+  }
+  
+  /* 🔹 Stylizacja aktywnej opcji */
+  ::ng-deep .mat-mdc-select-panel .mat-mdc-option.mat-mdc-selected {
+    background: rgba(255, 255, 255, 0.3) !important;
+    font-weight: bold !important;
+    color: #ffeb3b !important;
+  }
+  
+  /* 🔹 Ustawienie dropdowna NA WIERZCHU */
+  ::ng-deep .mat-mdc-select-panel.mdc-menu-surface {
+    position: absolute !important;
+    z-index: 9999 !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    max-height: none;
+  }
+  
+  /* 🔹 Stylizacja głównego pola dropdowna */
+  ::ng-deep mat-form-field {
+    border-radius: 8px !important;
+    padding: 10px !important;
+    font-size: 1.2vw !important;
+    color: white !important;
+  }
+  
+  /* 🔹 Tekst dropdowna */
+  ::ng-deep .mat-mdc-select {
+    color: white !important;
+    font-weight: bold !important;
+  }
+  
+
+
+  .serve-ball-right {
+    position: absolute;
+    right: 100px; /* Odsunięcie na prawo */
+    //top: 50%;
+    //transform: translateY(-50%); /* Wyśrodkowanie */
+    animation: bounce 0.8s infinite alternate ease-in-out;
+}
+
+.serve-ball-left {
+    position: absolute;
+    left: 100px; /* Odsunięcie na prawo */
+    //top: 50%;
+    //transform: translateY(-50%); /* Wyśrodkowanie */
+    animation: bounce 0.8s infinite alternate ease-in-out;
+}
+
+
+.ping-pong-icon {
+    width: 100px; /* Dostosuj rozmiar ikony */
+    height: auto;
+}
+  
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-5px); }
+  }
+  
+  .player-label {
+    margin:24px;
+  }
+
+  .profile-image {
+    height:100px;
+    min-height: 100px;
+  }
+
+  ::ng-deep .mat-mdc-option.player-badge .mdc-list-item__primary-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 24px;
+    gap: 10px;
+  }
+
+/* Menu */
+/* Menu */
+::ng-deep .player-menu {
+    min-width: 280px;
+    background: #2a2a2a !important; /* Ciemniejsze tło dla lepszego kontrastu */
+    color: white !important;
+    border-radius: 10px !important;
+    padding: 5px !important;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  /* Styl dla każdej opcji w menu */
+  ::ng-deep .player-option {
+    width: 100% !important;
+    padding: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    border-radius: 8px !important;
+    transition: background 0.3s ease-in-out !important;
+  }
+  
+  /* Pojedyncza karta gracza */
+  ::ng-deep .player-card {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+  
+  /* Zdjęcie gracza */
+  ::ng-deep .player-image {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50% !important;
+    margin-right: 12px !important;
+    border: 2px solid white !important;
+  }
+  
+  /* Informacje o graczu */
+  ::ng-deep .player-info {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+  }
+  
+  /* Nickname */
+  ::ng-deep .player-name {
+    font-size: 16px !important;
+    font-weight: bold !important;
+    color: #f1f1f1 !important; /* Jaśniejszy odcień dla lepszej widoczności */
+  }
+  
+  /* Pole atut (np. statystyka, poziom itp.) */
+  ::ng-deep .player-attribute {
+    font-size: 14px !important;
+    color: #d1d1d1 !important; /* Bardziej kontrastowy szary */
+  }
+  
+  /* Efekt hover */
+  ::ng-deep .player-option:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    cursor: pointer !important;
+  }
+  
+  /* Podświetlenie aktywnego gracza */
+  ::ng-deep .player-option.active {
+    background: rgba(255, 255, 255, 0.3) !important;
+    font-weight: bold !important;
+  }
+  
+  .hehe {
+    position: relative; /* Aby "serve-ball" był pozycjonowany względem tego kontenera */
+    display: flex;
+    align-items: center; /* Wyśrodkowanie w pionie */
+}
+  
+
+/* Kontener na przyciski */
+.finish-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;    
+    gap:5px;   
+}
+
+/* Zielony przycisk "Save Match" */
+.finish-match-button {
+    background: #4CAF50 !important; /* Zielony kolor */
+    color: white !important;
+    font-size: 2vw !important;
+    font-weight: bold !important;
+    padding: 20px 20px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: 0.3s !important;
+    box-shadow: 0px 5px 15px rgba(0, 255, 0, 0.3) !important;
+}
+
+.finish-match-button:hover {
+    background: #45a049 !important;
+    box-shadow: 0px 5px 15px rgba(0, 255, 0, 0.6) !important;
+    transform: scale(1.05) !important;
+}
+
+/* Czerwony przycisk "Reset" mniejszy i pod "Save Match" */
+.reset-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1vh;
+}
+
+.reset {
+    background: #FF5252 !important; /* Czerwony kolor */
+    color: white !important;
+    font-size: 1.5vw !important;
+    padding: 12px 40px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: 0.3s !important;
+    box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.3) !important;
+}
+
+.reset:hover {
+    background: #d32f2f !important;
+    box-shadow: 0px 5px 15px rgba(255, 0, 0, 0.6) !important;
+    transform: scale(1.05) !important;
+}
