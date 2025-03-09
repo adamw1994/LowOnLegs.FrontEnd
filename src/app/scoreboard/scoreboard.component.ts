@@ -89,11 +89,17 @@ export class ScoreboardComponent implements OnInit {
   
 
   decreaseScore(player: number) {
-    if (player === 1 && this.score1 > 0) {
-      this.score1--;
-    } else if (player === 2 && this.score2 > 0) {
-      this.score2--;
-    }
+    const url = `https://localhost:44375/api/Matches/${player === 1 ? 'subtract-point-player1' : 'subtract-point-player2'}`;
+  
+    this.http.post<MatchStateDto>(url, {}).subscribe({
+      next: (match) => {
+        console.log("Aktualizacja meczu:", match); // 🔥 Logowanie pełnego DTO
+        this.score1 = match.player1Score; // Aktualizacja wyniku
+        this.score2 = match.player2Score;
+        this.currentServer = match.currentServer;
+      },
+      error: (err) => console.error("Błąd przy dodawaniu punktu", err)
+    });
   }
 
   resetScore() {
