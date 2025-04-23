@@ -23,7 +23,19 @@ export class SignalRService {
 
     this.hubConnection
       .start()
-      .then(() => console.log('SignalR Connected!'))
+      .then(() => {
+        console.log('SignalR Connected!')
+        this.addScoreListener();
+      }
+
+    )
       .catch(err => console.error('SignalR Error: ', err));
+  }
+
+  private addScoreListener() {
+    this.hubConnection.on('UpdateScore', (score: { player1: number; player2: number }) => {
+      console.log('Nowy wynik otrzymany:', score);
+      this.scoreSubject.next(score); // 🔥 Emitujemy nowy wynik do subskrybentów (komponentów)
+    });
   }
 }

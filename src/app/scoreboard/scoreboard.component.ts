@@ -7,8 +7,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { MatchStateDto } from '../models/match-state-dto';
-import { Player } from '../models/player';
+import { Player, PlayerEnum } from '../models/player';
 import { MatMenuModule } from '@angular/material/menu';
+import { SignalRService } from '../services/signalr.service';
 
 @Component({
   selector: 'app-scoreboard',
@@ -23,7 +24,9 @@ import { MatMenuModule } from '@angular/material/menu';
   templateUrl: './scoreboard.component.html',
   styleUrls: ['./scoreboard.component.scss']
 })
+
 export class ScoreboardComponent implements OnInit {
+  PlayerEnum = PlayerEnum;
   players: Player[] = []; 
   defaultPlayer: Player = {
     id: 0,
@@ -36,11 +39,11 @@ export class ScoreboardComponent implements OnInit {
   
   selectedPlayer1: Player | null = null;
   selectedPlayer2: Player | null = null;
-  currentServer: 'Player1' | 'Player2' | null = null;
+  currentServer: PlayerEnum | null = null;
   score1 = 0;
   score2 = 0;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private signalRService: SignalRService) {}
 
   ngOnInit() {
     this.startMatch();
@@ -50,6 +53,12 @@ export class ScoreboardComponent implements OnInit {
         console.log("Pobrani gracze:", this.players);
       },
       error: (err) => console.error('Błąd pobierania graczy', err)
+    });
+
+    this.signalRService.score$.subscribe(newScore => {
+      console.log('Aktualizacja wyniku z SignalR:', newScore);
+      this.score1 = newScore.player1;
+      this.score2 = newScore.player2;
     });
   }
 
@@ -61,10 +70,10 @@ export class ScoreboardComponent implements OnInit {
     this.http.post<MatchStateDto>('https://localhost:44375/api/Matches/start', {}).subscribe({
       next: (match) => {
         console.log("Mecz rozpoczęty:", match);
-        this.score1 = match.player1Score;
-        this.score2 = match.player2Score;
-        this.selectedPlayer1 = match.player1 || null;
-        this.selectedPlayer2 = match.player2 || null;
+        this.score1 = match.leftPlayerScore;
+        this.score2 = match.rightPlayerScore;
+        this.selectedPlayer1 = match.leftPlayer || null;
+        this.selectedPlayer2 = match.rightPlayer || null;
         this.currentServer = match.currentServer;
       },
       error: (err) => console.error("Błąd przy starcie meczu", err)
@@ -73,14 +82,14 @@ export class ScoreboardComponent implements OnInit {
   
   
 
-  increaseScore(player: number) {
-    const url = `https://localhost:44375/api/Matches/${player === 1 ? 'add-point-player1' : 'add-point-player2'}`;
+  increaseScore(player: PlayerEnum) {
+    const url = `https://localhost:44375/api/Matches/add-point?player=${player}`;
   
     this.http.post<MatchStateDto>(url, {}).subscribe({
       next: (match) => {
         console.log("Aktualizacja meczu:", match); // 🔥 Logowanie pełnego DTO
-        this.score1 = match.player1Score; // Aktualizacja wyniku
-        this.score2 = match.player2Score;
+        this.score1 = match.leftPlayerScore; // Aktualizacja wyniku
+        this.score2 = match.rightPlayerScore;
         this.currentServer = match.currentServer;
       },
       error: (err) => console.error("Błąd przy dodawaniu punktu", err)
@@ -89,13 +98,13 @@ export class ScoreboardComponent implements OnInit {
   
 
   decreaseScore(player: number) {
-    const url = `https://localhost:44375/api/Matches/${player === 1 ? 'subtract-point-player1' : 'subtract-point-player2'}`;
+    const url = `https://localhost:44375/api/Matches/subtract-point?player=${player}`;
   
     this.http.post<MatchStateDto>(url, {}).subscribe({
       next: (match) => {
         console.log("Aktualizacja meczu:", match); // 🔥 Logowanie pełnego DTO
-        this.score1 = match.player1Score; // Aktualizacja wyniku
-        this.score2 = match.player2Score;
+        this.score1 = match.leftPlayerScore; // Aktualizacja wyniku
+        this.score2 = match.rightPlayerScore;
         this.currentServer = match.currentServer;
       },
       error: (err) => console.error("Błąd przy dodawaniu punktu", err)
@@ -105,10 +114,10 @@ export class ScoreboardComponent implements OnInit {
   resetScore() {
     this.http.post<MatchStateDto>('https://localhost:44375/api/Matches/reset', {}).subscribe({
       next: (match) => {
-        this.score1 = match.player1Score;
-        this.score2 = match.player2Score;
-        this.selectedPlayer1 = match.player1 || null;
-        this.selectedPlayer2 = match.player2 || null;
+        this.score1 = match.leftPlayerScore;
+        this.score2 = match.rightPlayerScore;
+        this.selectedPlayer1 = match.leftPlayer || null;
+        this.selectedPlayer2 = match.rightPlayer || null;
         this.currentServer = match.currentServer;
       },
       error: (err) => console.error("Błąd przy starcie meczu", err)
@@ -119,10 +128,10 @@ export class ScoreboardComponent implements OnInit {
     this.http.post<MatchStateDto>('https://localhost:44375/api/Matches/finish', {}).subscribe({
       next: (match) => {
         console.log("Mecz rozpoczęty:", match);
-        this.score1 = match.player1Score;
-        this.score2 = match.player2Score;
-        this.selectedPlayer1 = match.player1 || null;
-        this.selectedPlayer2 = match.player2 || null;
+        this.score1 = match.leftPlayerScore;
+        this.score2 = match.rightPlayerScore;
+        this.selectedPlayer1 = match.leftPlayer || null;
+        this.selectedPlayer2 = match.rightPlayer || null;
         this.currentServer = match.currentServer;
       },
       error: (err) => console.error("Błąd przy starcie meczu", err)
@@ -138,9 +147,9 @@ export class ScoreboardComponent implements OnInit {
       next: (match) => {
         console.log(`Gracz ${playerNumber} ustawiony:`, match);
         if (playerNumber === 1) {
-          this.selectedPlayer1 = match.player1 || null;
+          this.selectedPlayer1 = match.leftPlayer || null;
         } else {
-          this.selectedPlayer2 = match.player2|| null;
+          this.selectedPlayer2 = match.rightPlayer|| null;
         }
       },
       error: (err) => console.error(`Błąd ustawiania gracza ${playerNumber}`, err)

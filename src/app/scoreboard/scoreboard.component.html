@@ -39,13 +39,15 @@
         <img [src]="selectedPlayer1?.imagePath ?? defaultPlayer.imagePath" class="profile-image">
         <div class="player-label">{{ selectedPlayer1?.nickname || 'Player 1' }}</div>
       </div>
-      <span *ngIf="currentServer === 'Player1'" class="serve-ball-left">
+      {{currentServer}}
+      {{ PlayerEnum.Left}}
+      <span *ngIf="currentServer == PlayerEnum.Left" class="serve-ball-left">
         <img src="assets/images/ping-pong.png" alt="Ping Pong Icon" class="ping-pong-icon">
       </span>
       <div class="score-value">{{ score1 }}</div>
       <div class="score-buttons">
-        <!-- <button class="btn-score minus" (click)="decreaseScore(1)">-</button> -->
-        <button class="btn-score plus" (click)="increaseScore(1)">+</button>
+        <button class="btn-score minus" (click)="decreaseScore(PlayerEnum.Left)">-</button>
+        <button class="btn-score plus" (click)="increaseScore(PlayerEnum.Left)">+</button>
       </div>
     </div>
 
@@ -63,13 +65,14 @@
         <img [src]="selectedPlayer2?.imagePath ?? defaultPlayer.imagePath" class="profile-image">
         <div class="player-label">{{ selectedPlayer2?.nickname || 'Player 2' }}</div>
       </div>
-      <span *ngIf="currentServer === 'Player2'" class="serve-ball-right">
+      {{currentServer}}
+      <span *ngIf="currentServer == PlayerEnum.Right" class="serve-ball-right">
         <img src="assets/images/ping-pong.png" alt="Ping Pong Icon" class="ping-pong-icon">
       </span>
       <div class="score-value">{{ score2 }}</div>
       <div class="score-buttons">
-        <!-- <button class="btn-score minus" (click)="decreaseScore(2)">-</button> -->
-        <button class="btn-score plus" (click)="increaseScore(2)">+</button>
+        <button class="btn-score minus" (click)="decreaseScore(PlayerEnum.Right)">-</button> 
+        <button class="btn-score plus" (click)="increaseScore(PlayerEnum.Right)">+</button>
       </div>
     </div>
   </div>

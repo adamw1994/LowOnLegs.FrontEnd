@@ -6,4 +6,9 @@ export interface Player {
     imagePath: string;
     attribute: string;
   }
+
+  export enum PlayerEnum {
+    Left = 1,
+    Right = 2
+  }
   

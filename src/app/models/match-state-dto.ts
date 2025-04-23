@@ -1,10 +1,11 @@
 import { Player } from "./player";
+import { PlayerEnum } from "./player";
 
 export interface MatchStateDto {
-    player1Score: number;
-    player2Score: number;
-    player1: Player | null;
-    player2: Player | null;
-    currentServer: 'Player1' | 'Player2' | null;
+    leftPlayerScore: number;
+    rightPlayerScore: number;
+    leftPlayer: Player | null;
+    rightPlayer: Player | null;
+    currentServer: PlayerEnum;
   }
   
